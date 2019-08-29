@@ -4,7 +4,7 @@ from datetime import datetime
 
 DATA_NORMAL = {
     'nzd': 0.003,
-    'aud': 0.005,
+    'a50': 0.5,
     'ustec': 0.5,
     'vix': 12
 }
