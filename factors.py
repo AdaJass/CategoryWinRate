@@ -3,15 +3,16 @@
 from datetime import datetime
 
 DATA_NORMAL = {
-    'nzd': 0.003,
-    'a50': 0.5,
-    'ustec': 0.5,
-    'vix': 12
+    'nzd': 0.0009,
+    'a50': 200,
+    'tec': 100,
+    'vix': 10
 }
 
 def data_trend(data, sym='nzd'):
     """data is an array of typical price
     """
+    data = list(data)
     open_ = data[0]
     low = min(data)
     top = max(data)
@@ -42,22 +43,22 @@ def data_trend(data, sym='nzd'):
     if not up and not down:
         vib=True
     return {
-        'up': up,
-        'down': down,
-        'vib': vib,
-        'strength': strength,
-        'trend': trend
+        sym + '_up': up,
+        sym + '_down': down,
+        sym + '_vib': vib,
+        sym + '_strength': strength,
+        sym + '_trend': trend
     }
 
 def vix_index(vix):
     fear = 0
-    if vix > DATA_NORMAL['vix'] + 8:
+    if vix > DATA_NORMAL['vix'] + 6:
         fear = 1
-    if vix > DATA_NORMAL['vix'] + 8*2:
+    if vix > DATA_NORMAL['vix'] + 6*2:
         fear = 2
-    if vix > DATA_NORMAL['vix'] + 8*3:
+    if vix > DATA_NORMAL['vix'] + 6*3:
         fear = 3
-    return fear
+    return {'vix': fear}
 
 
 def week_day_of(timestr, fmt = '%y-%m-%d %H:%M:%S'):
