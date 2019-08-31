@@ -4,8 +4,8 @@ from datetime import datetime
 
 DATA_NORMAL = {
     'nzd': 0.0009,
-    'a50': 200,
-    'tec': 100,
+    'a50': 150,
+    'tec': 80,
     'vix': 10
 }
 
@@ -36,16 +36,18 @@ def data_trend(data, sym='nzd'):
     up=False
     down=False
     vib =False
+    direction = 0
     if trend>0 and diff > 0:
         up = True
+        direction = 1
     if trend>0 and diff < 0:
         down = True
+        direction = -1
     if not up and not down:
         vib=True
+        direction = 0
     return {
-        sym + '_up': up,
-        sym + '_down': down,
-        sym + '_vib': vib,
+        sym + '_direction': direction,
         sym + '_strength': strength,
         sym + '_trend': trend
     }

@@ -103,9 +103,7 @@ while True:
         nzd = factors.data_trend(nzd, 'nzd')
     else:
         nzd = {
-            'nzd_up': False,
-            'nzd_down': False,
-            'nzd_vib': True,
+            'nzd_direction': 0,
             'nzd_strength': 0,
             'nzd_trend': 0
         }
@@ -129,7 +127,7 @@ while True:
     last_vix = vix
     now = now + td_day1
 
-pd.DataFrame(learns, columns = ['Date','nzd_up', 'nzd_down', 'nzd_vib', 'nzd_strength', 'nzd_trend', 'tec_up', 'tec_down', 'tec_vib', 'tec_strength', 'tec_trend', 'lastday_up', 'lastday_down', 'lastday_vib', 'lastday_strength', 'lastday_trend', 'vix', 'weekday', 'a50_up', 'a50_down', 'a50_vib', 'a50_strength', 'a50_trend']).to_csv('./data/learn.csv')
+pd.DataFrame(learns, columns = ['Date','nzd_direction', 'nzd_strength', 'nzd_trend', 'tec_direction', 'tec_strength', 'tec_trend', 'lastday_direction', 'lastday_strength', 'lastday_trend', 'vix', 'weekday', 'a50_direction', 'a50_strength', 'a50_trend']).to_csv('./data/learn.csv')
     
 
 
