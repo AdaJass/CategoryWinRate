@@ -21,7 +21,7 @@ vix_to_time  = lambda x:dt.strptime(x, '%m/%d/%Y')
 
 VIX['Date']=VIX['Date'].apply(vix_to_time)
 A50['Date']=A50['Date'].apply(mt4_to_time)
-NZD['Date']=NZD['Date'].apply(mt4_to_time)
+NZD['Date']=NZD['Date'].apply(mt4_to_time) 
 TEC['Date']=TEC['Date'].apply(mt4_to_time)
 
 print('read data completed!\n')
@@ -68,7 +68,7 @@ while True:
     a50_start_index = tem.index[0]
     a50_rows = A50[a50_start_index: a50_start_index + 4*6]
     a50 = a50_rows[['Open','High','Low','Close']].apply(typical_price, axis = 1)
-    a50 = factors.data_trend(a50, 'a50')
+    a50 = factors.data_trend15(a50, 'a50')
     if not last_day_a50:
         last_day_a50 = a50
         print('no last_day_a50 ',last_day_a50)
@@ -91,7 +91,7 @@ while True:
         tec_start_index = tec_start_index.index[0]
         tec_rows = TEC[tec_start_index: tec_start_index + 7*4]
         tec = tec_rows[['Open','High','Low','Close']].apply(typical_price, axis = 1)
-        tec = factors.data_trend(tec, 'tec')
+        tec = factors.data_trend15(tec, 'tec')
     else:
         tec = last_day_tec
     # print('cal nzd')
@@ -100,7 +100,7 @@ while True:
         nzd_start_index = nzd_start_index.index[0]
         nzd_rows = NZD[nzd_start_index: nzd_start_index + time_rule[timerule]['cn']]
         nzd = nzd_rows[['Open','High','Low','Close']].apply(typical_price, axis = 1)
-        nzd = factors.data_trend(nzd, 'nzd')
+        nzd = factors.data_trend15(nzd, 'nzd')
     else:
         nzd = {
             'nzd_direction': 0,

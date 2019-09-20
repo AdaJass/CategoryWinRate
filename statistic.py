@@ -14,6 +14,8 @@ def patter_query(df, *patterns,**pattern_dict):
     query_str = query_str.strip('& ')
     print(query_str)
     return df.query(query_str)
+    pass
+
 
 def statistic(df):
     indicators = {
@@ -41,64 +43,34 @@ def statistic(df):
 
     re_patter = [' & a50_direction==-1', ' & a50_direction==1', ' & a50_direction==0']
 
+    up_labels = []
     ups = []
+    down_labels = []
     downs = []
+    vib_labels = []
     vibs = []
-    labels = []
-    for it in (single_patterns + double_patters):        
+    for it in (single_patterns + double_patters):
         x = patter_query(df, it)
-        if(len(x)<10):
-            continue
+
         y_down = patter_query(x, it + re_patter[0])
         y_up = patter_query(x, it + re_patter[1])
         y_vib = patter_query(x, it + re_patter[2])
-
-        up = len(x) and len(y_up)/len(x)
-        vib = len(x) and len(y_vib)/len(x)
-        down = len(x) and len(y_down)/len(x)
-
-        ups.append(up)
-        vibs.append(down)
-        downs.append(vib)
-        labels.append(it+f' has_{len(x)}')
-    pd.DataFrame({'labels': labels, 'ups':ups, 'vibs':vibs, 'downs': downs}).to_csv('./data/patterns_statis.csv')
-    return ups,downs,vibs, labels
+        
+        ups.append(len(y_up)/len(x))
+        labels.append(it+'_up')
+        vibs.append(len(y_vib)/len(x))
+        labels.append(it+'_vib')
+        downs.append(len(y_down)/len(x))
+        labels.append(it+'_down')
+    return up_labels,ups,down_labels,downs,vibs,vib_labels
+    pass
 
 if __name__ == "__main__":  
     import matplotlib.pyplot as plt 
-    plt.xticks(rotation=90)
-    ups,downs,vibs,labels = statistic(dtf)
-    # cause there are too many items, so it need to be sort 
-    # to just present the first-n items
-    # below implement bubble-sort
-    length = len(ups)
-    for i in range(length):
-        for j in range(i+1, length):
-            if ups[i] > ups[j]:
-                ups[i], ups[j] = ups[j], ups[i]
-                downs[i], downs[j] = downs[j], downs[i]
-                labels[i], labels[j] = labels[j], labels[i]
-                vibs[i], vibs[j] = vibs[j], vibs[i]
-    
-    ups = ups[:20] + ups[-20:] 
-    downs = downs[:20] + downs[-20:]
-    labels = labels[:20] + labels[-20:]
-    vibs = vibs[:20] + vibs[-20:]
-    x = list(range(len(ups)))
-    width = 0.25
-    print('ups:\n',x, ups)
-    plt.bar(x, ups, width=width, label='up', fc = 'y')
-    for i in range(len(x)):
-        x[i] = x[i] + width
-    print('vibs:\n',x, vibs)
-    plt.bar(x, vibs, width=width, label='vib', tick_label = labels, fc = 'r')
-    for i in range(len(x)):
-        x[i] = x[i] + width
-    print('downs:\n',x, downs)
-    plt.bar(x, downs, width=width, label='down',fc = 'b')
-    plt.savefig('./static.jpg')
-    plt.show()
-
+    statics, labels = statistic(dtf)
+    up
+    plt.bar(x, num_list, width=width, label='boy',fc = 'y')
+    plt.bar(x, num_list1, width=width, label='girl',tick_label = name_list,fc = 'r')
 
     # x1 = patter_query(dtf, 'vix==0', tec_direction=1)
     # y1 = patter_query(dtf, 'vix==0', tec_direction=1, a50_direction=1)
