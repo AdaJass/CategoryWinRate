@@ -5,7 +5,7 @@ DATA_NORMAL = {
     'a50': 150,
     'tec': 80,
     'vix': 10,
-    'A50': 50,
+    'A300': 50,
     'US30': 200
 }
 
@@ -52,26 +52,33 @@ def data_trend_m15(data, sym='nzd'):
         sym + '_trend': trend
     }
 
-def data_trend_d1(data, sym='A50'):
+def data_trend_d1(data, sym='A300'):
     """data is an dict present a day bar of open high low close volume 
 
     return a string descript the perform of the day price movement.
     """
     body = data['Close'] - data['Open']
-    tail = data['High'] - data['Low']
-    prefix = 'a'
-    if abs(body)/tail > 10 and tail > 1.5 * DATA_NORMAL[sym]:
-        prefix = 'b'
+    tail = data['High'] - data['Low'] - abs(body)
+    Norm = data['Close'] * 0.01
+    prefix = 'b'
+    if abs(body) < 0.2 * Norm and tail > Norm*0.4:
+        prefix = 'a'
 
     trend = 0
     for mul in range(1,4):
-        if abs(body) > DATA_NORMAL[sym] * mul * 0.35:
+        if abs(body) > Norm * mul * 0.35:
             trend = mul 
-
-    if body < 0:
-        trend = -trend       
+    
+    if prefix is 'a':
+        for mul in range(1,3):
+            if tail > Norm * (0.4+mul*0.4):
+                trend = mul
 
     des = prefix + str(trend)
+    des = '0x' + des
+    if body < 0:
+        des = '-' + des
+
     return {sym + '_des': des}
         
         
